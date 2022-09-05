@@ -1,24 +1,27 @@
 #include "raylib.h"
 #include <list>
 
-void init(){
+void mainMenu(Rectangle button) {
+    DrawText("GAME NAME", 250, 100, 50, BLACK);
+    DrawText("2022 - Developed by: Yasir Saeed ", 285, 500, 15, BLACK);
 
-    BeginDrawing();
-    ClearBackground(RAYWHITE);
+    // Play Button
+    DrawRectangle(button.x, button.y, button.width, button.height,
+                  RED);
 
+    DrawText("PLAY", (GetScreenWidth() / 2) - 28, 300, 20, WHITE);
 }
 
-int main(void)
-{
+
+int main() {
     std::list<Rectangle> objects;
 
-    Vector2 mousePt = {0.0f, 0.0f};
-    Rectangle playButton = {300,275,200,75};
+    Vector2 mousePt;
+    Rectangle playButton = {300, 275, 200, 75};
 
     const int screenWidth = 800;
     const int screenHeight = 600;
     bool isMenu = true;
-
     InitWindow(screenWidth, screenHeight, "development");
     SetTargetFPS(60);
 
@@ -27,27 +30,23 @@ int main(void)
     {
 
         mousePt = GetMousePosition();
-        init();
+        BeginDrawing();
+        ClearBackground(RAYWHITE);
+        DrawFPS(10, 10);
+        //----------------------------------------------------------------------------------
+        if (isMenu) { // Game menu
 
-        if(isMenu) { // Game menu
-
-            // Main text
-            DrawText("GAME NAME",250,100,50,BLACK);
-            DrawText("2022 - Developed by: Yasir Saeed ",285,500,15,BLACK);
-
-            // Play Button
-            DrawRectangle(playButton.x,playButton.y,playButton.width,playButton.height,
-                          RED);
-
-            DrawText("PLAY", (GetScreenWidth() / 2)-28, 300, 20, WHITE);
+            mainMenu(playButton);
 
             // Check if player clicks play button
-            if(CheckCollisionPointRec(mousePt,playButton)){
-                if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
-                    isMenu = false;
-                }
+            if (CheckCollisionPointRec(mousePt, playButton)
+                && ((IsMouseButtonPressed(MOUSE_BUTTON_LEFT)))) {
+                isMenu = false;
+
             }
-        }else{ // Game loop
+            //----------------------------------------------------------------------------------
+        } else { // Game loop
+
 
 
 
