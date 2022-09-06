@@ -1,7 +1,8 @@
 #include "raylib.h"
 #include <list>
 
-void mainMenu(Rectangle button) {
+bool mainMenu(Rectangle button, bool menuState, Vector2 mouse) {
+
     DrawText("GAME NAME", 250, 100, 50, BLACK);
     DrawText("2022 - Developed by: Yasir Saeed ", 285, 500, 15, BLACK);
 
@@ -10,6 +11,15 @@ void mainMenu(Rectangle button) {
                   RED);
 
     DrawText("PLAY", (GetScreenWidth() / 2) - 28, 300, 20, WHITE);
+
+    // Check if player clicks play button
+    if (CheckCollisionPointRec(mouse, button)
+        && ((IsMouseButtonPressed(MOUSE_BUTTON_LEFT)))) {
+        menuState = false;
+
+    }
+    return menuState;
+
 }
 
 
@@ -36,14 +46,7 @@ int main() {
         //----------------------------------------------------------------------------------
         if (isMenu) { // Game menu
 
-            mainMenu(playButton);
-
-            // Check if player clicks play button
-            if (CheckCollisionPointRec(mousePt, playButton)
-                && ((IsMouseButtonPressed(MOUSE_BUTTON_LEFT)))) {
-                isMenu = false;
-
-            }
+            isMenu = mainMenu(playButton, isMenu, mousePt);
             //----------------------------------------------------------------------------------
         } else { // Game loop
 
