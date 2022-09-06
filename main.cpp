@@ -1,30 +1,38 @@
 #include "raylib.h"
+#include "mainmenu.h"
+#include "movement.h"
 #include <list>
 
-bool mainMenu(Rectangle button, bool menuState, Vector2 mouse) {
 
-    DrawText("GAME NAME", 250, 100, 50, BLACK);
-    DrawText("2022 - Developed by: Yasir Saeed ", 285, 500, 15, BLACK);
 
-    // Play Button
-    DrawRectangle(button.x, button.y, button.width, button.height,
-                  RED);
+struct bullet{
+    int x,y;
+    int radius = 10;
+    bool isVisible = true;
 
-    DrawText("PLAY", (GetScreenWidth() / 2) - 28, 300, 20, WHITE);
+};
 
-    // Check if player clicks play button
-    if (CheckCollisionPointRec(mouse, button)
-        && ((IsMouseButtonPressed(MOUSE_BUTTON_LEFT)))) {
-        menuState = false;
+std::list<bullet> objects;
+std::list<bullet>::iterator iter;
 
-    }
-    return menuState;
 
+void Spawn(int x,int y){
+    bullet Bullet;
+    Bullet.x = x;
+    Bullet.y = y;
+    objects.emplace_back(Bullet);
 }
 
 
 int main() {
-    std::list<Rectangle> objects;
+
+
+    player Player;
+    Player.x = 400;
+    Player.y = 300;
+    Player.radius = 15;
+
+
 
     Vector2 mousePt;
     Rectangle playButton = {300, 275, 200, 75};
@@ -46,10 +54,31 @@ int main() {
         //----------------------------------------------------------------------------------
         if (isMenu) { // Game menu
 
-            isMenu = mainMenu(playButton, isMenu, mousePt);
+            isMenu = mainMenu(playButton, mousePt, isMenu);
             //----------------------------------------------------------------------------------
         } else { // Game loop
 
+            DrawCircle(Player.x,Player.y,Player.radius, BLACK);
+            Player = playerMovement(Player);
+
+            // iterate through list of bullets, and draw them
+            for (iter = objects.begin(); iter != objects.end();) {
+                DrawCircle(iter->x,iter->y,iter->radius,BLACK);
+
+                iter->y -= 350.0f * GetFrameTime();
+
+                if(iter->y < 0)
+                    iter = objects.erase(iter);
+                else
+                    iter++;
+
+            }
+            
+            // Bullet spawner
+            if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+                Spawn(Player.x,Player.y);
+
+            }
 
 
 
