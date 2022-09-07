@@ -19,5 +19,4 @@ bool mainMenu(Rectangle button, Vector2 mouse, bool menuState) {
 
     }
     return menuState;
-
 }

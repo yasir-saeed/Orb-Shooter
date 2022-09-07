@@ -1,11 +1,12 @@
 
-struct player{
-    int x,y;
-    int radius;
+struct user{
+    float x,y;
+    float radius = 15;
+    int health;
 };
 
 
-player playerMovement(struct player Player){
+user playerMovement(struct user Player){
 
     // Player controls
     if (IsKeyDown(KEY_A)) {
