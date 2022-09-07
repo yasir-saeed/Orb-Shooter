@@ -1,27 +1,7 @@
 #include "raylib.h"
 #include "mainmenu.h"
 #include "movement.h"
-#include <list>
-
-
-
-struct bullet{
-    int x,y;
-    int radius = 10;
-    bool isVisible = true;
-
-};
-
-std::list<bullet> objects;
-std::list<bullet>::iterator iter;
-
-
-void Spawn(int x,int y){
-    bullet Bullet;
-    Bullet.x = x;
-    Bullet.y = y;
-    objects.emplace_back(Bullet);
-}
+#include "bullets.h"
 
 
 int main() {
@@ -32,10 +12,8 @@ int main() {
     Player.y = 300;
     Player.radius = 15;
 
-
-
     Vector2 mousePt;
-    Rectangle playButton = {300, 275, 200, 75};
+
 
     const int screenWidth = 800;
     const int screenHeight = 600;
@@ -59,28 +37,15 @@ int main() {
         } else { // Game loop
 
             DrawCircle(Player.x,Player.y,Player.radius, BLACK);
+
+            // Update player based on movement
             Player = playerMovement(Player);
 
             // iterate through list of bullets, and draw them
-            for (iter = objects.begin(); iter != objects.end();) {
-                DrawCircle(iter->x,iter->y,iter->radius,BLACK);
+            bulletUpdater(ammo);
 
-                iter->y -= 350.0f * GetFrameTime();
-
-                if(iter->y < 0)
-                    iter = objects.erase(iter);
-                else
-                    iter++;
-
-            }
-            
-            // Bullet spawner
-            if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
-                Spawn(Player.x,Player.y);
-
-            }
-
-
+            // Bullet spawner, if player fires
+            shootBullet(Player);
 
 
         }

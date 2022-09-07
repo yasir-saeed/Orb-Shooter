@@ -1,11 +1,4 @@
-//
-// Created by yasir on 2022-09-06.
-//
 
-#ifndef EXAMPLE_MOVEMENT_H
-#define EXAMPLE_MOVEMENT_H
-
-#endif //EXAMPLE_MOVEMENT_H
 struct player{
     int x,y;
     int radius;

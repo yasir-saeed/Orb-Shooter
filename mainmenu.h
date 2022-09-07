@@ -1,9 +1,5 @@
 
-
-#ifndef EXAMPLE_MAINMENU_H
-#define EXAMPLE_MAINMENU_H
-
-#endif //EXAMPLE_MAINMENU_H
+Rectangle playButton = {300, 275, 200, 75};
 
 bool mainMenu(Rectangle button, Vector2 mouse, bool menuState) {
 
