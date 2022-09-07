@@ -1,5 +1,5 @@
 #include <list>
-
+int score;
 
 struct bullet {
     float x, y;
@@ -50,6 +50,7 @@ void bulletCollision(std::list<bullet> &ammo, std::list<user> &enemies) {
 
                 collEnemy = enemies.erase(collEnemy);
                 collBullet = ammo.erase(collBullet);
+                score++;
 
             } else {
                 collEnemy++;

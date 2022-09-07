@@ -2,43 +2,19 @@
 #include "mainmenu.h"
 #include "movement.h"
 #include "bullets.h"
-
-std::list<user> enemies;
-std::list<user>::iterator enemyIter;
-
-
-void SpawnEnemy() {
-    user Enemy;
-    Enemy.x = GetRandomValue(0, GetScreenWidth());
-    Enemy.y = 25.0f;
-    Enemy.health = 1;
-
-    enemies.emplace_back(Enemy);
-}
+#include "enemies.h"
+#include "timer.h"
 
 
-void enemyUpdater(std::list<user> &objects) {
-    for (enemyIter = objects.begin(); enemyIter != objects.end();) {
+int main() {
 
-
-        DrawCircle(enemyIter->x, enemyIter->y, enemyIter->radius, RED);
-        enemyIter->y += 100.0f * GetFrameTime();
-
-        if (enemyIter->y > GetScreenHeight()) {
-            enemyIter = objects.erase(enemyIter);
-        } else
-            enemyIter++;
-    }
-}
-
-
-
-    int main() {
-
+        float spawnTime = 3.0f;
+        Timer enemySpawner;
 
         user Player;
-        Player.x = 400;
-        Player.y = 300;
+        Player.x = 400.0f;
+        Player.y = 300.0f;
+        Player.health = 1;
 
 
         Vector2 mousePt;
@@ -49,11 +25,18 @@ void enemyUpdater(std::list<user> &objects) {
         bool isMenu = true;
         InitWindow(screenWidth, screenHeight, "development");
         SetTargetFPS(60);
-        SpawnEnemy();
+
 
         // Main game loop
         while (!WindowShouldClose())    // Detect window close button or ESC key
         {
+
+            updateTimer(&enemySpawner);
+
+            if(TimerDone(&enemySpawner)){
+                SpawnEnemy();
+                enemySpawner.lifetime = spawnTime;
+            }
 
             mousePt = GetMousePosition();
             BeginDrawing();
@@ -67,11 +50,13 @@ void enemyUpdater(std::list<user> &objects) {
             } else { // Game loop
 
                 DrawCircle(Player.x, Player.y, Player.radius, BLACK);
+                DrawText(TextFormat("SCORE: %i", score), 325, 20, 30, RED);
+
 
                 // Update player based on movement
                 Player = playerMovement(Player);
 
-                // iterate through list of bullets, and draw them
+                // Draw all bullets on screen
                 bulletUpdater(ammo);
 
                 // Bullet spawner, if player fires
@@ -82,6 +67,7 @@ void enemyUpdater(std::list<user> &objects) {
 
                 // check for collisions between bullets and enemies
                 bulletCollision(ammo,enemies);
+
 
             }
 
