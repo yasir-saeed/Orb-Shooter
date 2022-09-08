@@ -5,25 +5,6 @@
 #include "enemies.h"
 #include "timer.h"
 
-std::list<user>::iterator enemyIterTwo;
-bool userEnemyCollision(user Player,std::list<user> &enemies, bool state){
-    for (enemyIterTwo = enemies.begin(); enemyIterTwo != enemies.end();enemyIterTwo++) {
-
-        if (CheckCollisionCircles({(enemyIterTwo->x), (enemyIterTwo->y)}, enemyIterTwo->radius,
-                                  {(Player.x), (Player.y)}, Player.radius)){
-
-            state = true;
-        }
-        else{
-            state = false;
-        }
-
-    }
-    return state;
-
-
-}
-
 
 int main() {
 
@@ -67,8 +48,10 @@ int main() {
             }
             else { // Game loop
 
-
+                Player = Player;
+                // Keep track if enemy collides with player, or goes offscreen
                 loseState = userEnemyCollision(Player, enemies, loseState);
+
                 DrawText(TextFormat("SCORE: %i", score), 325, 20, 30, RED);
 
 

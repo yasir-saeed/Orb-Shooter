@@ -1,5 +1,6 @@
 std::list<user> enemies;
 std::list<user>::iterator enemyIter;
+std::list<user>::iterator enemyIterTwo;
 
 
 void SpawnEnemy() {
@@ -27,3 +28,23 @@ void enemyUpdater(std::list<user> &objects) {
             enemyIter++;
     }
 }
+
+bool userEnemyCollision(user Player,std::list<user> &enemies, bool state){
+    for (enemyIterTwo = enemies.begin(); enemyIterTwo != enemies.end();) {
+
+        if ((CheckCollisionCircles({(enemyIterTwo->x), (enemyIterTwo->y)}, enemyIterTwo->radius,
+                                   {(Player.x), (Player.y)}, Player.radius))
+            || (enemyIterTwo->y > GetScreenHeight()+5)){
+
+            state = true;
+            break;
+        }
+        else{
+            state = false;
+            enemyIterTwo++;
+        }
+
+    }
+    return state;
+}
+
