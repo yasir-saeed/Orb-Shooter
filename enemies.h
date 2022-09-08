@@ -5,7 +5,7 @@ std::list<user>::iterator enemyIter;
 void SpawnEnemy() {
     user Enemy;
     Enemy.x = GetRandomValue(0, GetScreenWidth());
-    Enemy.y = 25.0f;
+    Enemy.y = -25.0f;
     Enemy.health = 1;
 
     enemies.emplace_back(Enemy);
