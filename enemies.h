@@ -5,7 +5,7 @@ std::list<user>::iterator enemyIterTwo;
 // Spawn enemy and add it to list of enemies
 void SpawnEnemy() {
     user Enemy;
-    Enemy.x = GetRandomValue(0, GetScreenWidth());
+    Enemy.x = GetRandomValue(0, GetScreenWidth()-15);
     Enemy.y = -25.0f;
 
     enemies.emplace_back(Enemy);

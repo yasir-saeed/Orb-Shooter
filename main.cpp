@@ -39,7 +39,6 @@ int main() {
         while (!WindowShouldClose())    // Detect window close button or ESC key
         {
 
-
             mousePt = GetMousePosition();
             BeginDrawing();
             ClearBackground(RAYWHITE);
@@ -101,7 +100,7 @@ int main() {
 
                         if(TimerDone(&powerUpLength)){
                             Player.powerUpSpeed = 1;
-                            powerUpLength.lifetime = 10.0f;
+                            powerUpLength.lifetime = 15.0f;
                         }
                     }
 
