@@ -1,5 +1,5 @@
 #include "raylib.h"
-
+#include "powerups.h"
 
 struct Timer{
     float lifetime;
@@ -21,4 +21,18 @@ bool TimerDone(Timer* timer)
         return timer->lifetime <= 0;
 
     return false;
+}
+
+void EnemySpawn(Timer* timer,float spawnTime){
+    if (TimerDone(timer)) {
+        SpawnEnemy();
+        timer->lifetime = spawnTime;
+    }
+}
+
+void powerUpSpawn(Timer* timer){
+    if(TimerDone(timer)){
+        spawnPowerUp();
+        timer->lifetime = (float)GetRandomValue(30,60);
+    }
 }

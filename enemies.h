@@ -2,20 +2,18 @@ std::list<user> enemies;
 std::list<user>::iterator enemyIter;
 std::list<user>::iterator enemyIterTwo;
 
-
+// Spawn enemy and add it to list of enemies
 void SpawnEnemy() {
     user Enemy;
     Enemy.x = GetRandomValue(0, GetScreenWidth());
     Enemy.y = -25.0f;
-    Enemy.health = 1;
 
     enemies.emplace_back(Enemy);
 }
 
-
+// Draw enemy and update its position, removing it if goes off-screen
 void enemyUpdater(std::list<user> &objects) {
     for (enemyIter = objects.begin(); enemyIter != objects.end();) {
-
 
         DrawCircle(enemyIter->x, enemyIter->y, enemyIter->radius, RED);
         enemyIter->y += 100.0f * GetFrameTime();
@@ -29,6 +27,7 @@ void enemyUpdater(std::list<user> &objects) {
     }
 }
 
+// Check for collision between enemies and player
 bool userEnemyCollision(user Player,std::list<user> &enemies, bool state){
     for (enemyIterTwo = enemies.begin(); enemyIterTwo != enemies.end();) {
 
@@ -47,4 +46,3 @@ bool userEnemyCollision(user Player,std::list<user> &enemies, bool state){
     }
     return state;
 }
-

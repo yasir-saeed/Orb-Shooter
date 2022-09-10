@@ -1,5 +1,6 @@
 
 Rectangle playButton = {300, 275, 200, 75};
+Rectangle playAgainButton = {260, 300, 275, 75};
 
 bool mainMenu(Rectangle button, Vector2 mouse, bool menuState) {
 
@@ -19,4 +20,11 @@ bool mainMenu(Rectangle button, Vector2 mouse, bool menuState) {
 
     }
     return menuState;
+}
+
+void GameOver(){
+    DrawText("GAME OVER", (GetScreenWidth() / 2) - 95, 200, 30, RED);
+    DrawRectangle(playAgainButton.x,playAgainButton.y,playAgainButton.width,playAgainButton.height, RED);
+    DrawText("BACK TO MAIN MENU", playAgainButton.x+25, playAgainButton.y+25, 20, WHITE);
+
 }

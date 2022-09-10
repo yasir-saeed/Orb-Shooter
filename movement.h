@@ -2,7 +2,8 @@
 struct user{
     float x,y;
     float radius = 15;
-    int health;
+    int spawnTime;
+    int powerUpSpeed = 1;
 };
 
 
@@ -10,17 +11,17 @@ user playerMovement(struct user Player){
 
     // Player controls
     if (IsKeyDown(KEY_A)) {
-        Player.x -= 200 * GetFrameTime();
+        Player.x -= (200 * GetFrameTime()) * Player.powerUpSpeed;
     }
     if (IsKeyDown(KEY_D)) {
-        Player.x += 200 * GetFrameTime();
+        Player.x += (200 * GetFrameTime()) * Player.powerUpSpeed;
     }
 
     if (IsKeyDown(KEY_W)) {
-        Player.y -= 200 * GetFrameTime();
+        Player.y -= (200 * GetFrameTime()) * Player.powerUpSpeed;
     }
     if (IsKeyDown(KEY_S)) {
-        Player.y += 200 * GetFrameTime();
+        Player.y += (200 * GetFrameTime()) * Player.powerUpSpeed;
     }
 
     // Prevent user from going off-screen

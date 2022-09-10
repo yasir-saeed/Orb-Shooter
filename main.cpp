@@ -1,23 +1,27 @@
 #include "raylib.h"
-#include "mainmenu.h"
+#include "menus.h"
 #include "movement.h"
 #include "bullets.h"
 #include "enemies.h"
 #include "timer.h"
 
 
+
 int main() {
 
-        float spawnTime = 2.5f;
+        float enemySpawnTime = 2.5f;
+        float powerUpSpawnTime = (float)GetRandomValue(0,30);
+
         Timer enemySpawner;
+        Timer powerUpSpawner;
+        powerUpSpawner.lifetime = powerUpSpawnTime;
+
+        Timer powerUpLength;
+        powerUpLength.lifetime = 15.0f;
 
         user Player;
         Player.x = 400.0f;
         Player.y = 300.0f;
-        Player.health = 1;
-
-
-    Rectangle playAgainButton = {300, 300, 200, 75};
 
 
         Vector2 mousePt;
@@ -74,22 +78,40 @@ int main() {
                     // check for collisions between bullets and enemies
                     bulletCollision(ammo, enemies);
 
-                    // keep track of time between spawns
+                    powerUpUpdater(powerups);
+
+                    // keep track of time between enemy spawns
                     updateTimer(&enemySpawner);
+                    updateTimer(&powerUpSpawner);
 
                     // spawn enemies whenever timer completes, then reset timer
-                    if (TimerDone(&enemySpawner)) {
-                        SpawnEnemy();
-                        enemySpawner.lifetime = spawnTime;
+                    EnemySpawn(&enemySpawner,enemySpawnTime);
+
+                    // spawn power ups when timer is done
+                    powerUpSpawn(&powerUpSpawner);
+
+                    // check if player collides with power up
+                    userPowerUpCollision(Player,powerups);
+
+
+                    // start countdown timer if player picks up power-up
+                    if(Player.powerUpSpeed == 2){
+                        DrawText(TextFormat("2x SPEED"), 350, 60, 20, BLACK);
+                        updateTimer(&powerUpLength);
+
+                        if(TimerDone(&powerUpLength)){
+                            Player.powerUpSpeed = 1;
+                            powerUpLength.lifetime = 10.0f;
+                        }
                     }
 
 
 
                 }
+                // Game over screen if lose condition is met
                 else{
-                    DrawText("GAME OVER", (GetScreenWidth() / 2) - 95, 200, 30, RED);
-                    DrawRectangle(playAgainButton.x,playAgainButton.y,playAgainButton.width,playAgainButton.height, RED);
-                    DrawText("PLAY AGAIN", playAgainButton.x+35, playAgainButton.y+25, 20, WHITE);
+
+                    GameOver();
 
                     if(CheckCollisionPointRec(mousePt,playAgainButton)
                        && ((IsMouseButtonPressed(MOUSE_BUTTON_LEFT)))){
@@ -101,7 +123,6 @@ int main() {
                     }
 
                 }
-
 
             }
 
